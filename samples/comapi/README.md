@@ -1,0 +1,1 @@
+The samples show the necessary steps to get a JWT token used for API authentication. Token is then used to get monitor's selections. The samples show different techniques to acomplish the above in different environments.
