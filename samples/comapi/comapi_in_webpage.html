@@ -1,0 +1,73 @@
+<!-- Run ComApi in a webpage
+Demonstrating:
+- Loading ComApi from external script
+- Using browsers's localStorage as token storage
+- ComApi.GetToken and ComApi.SendGet with promises
+-->
+
+<html>
+  <head>
+    <script src="https://runape.com/scripts/releasebin/comapi.js"></script>
+  </head>
+  <body>
+    <div id="result"></div>
+    <script>
+      function print(message) {
+        console.log(message);
+        document.getElementById("result").innerHTML += "<br>" + message;
+      }
+
+      try {
+        var sKey = "Token"; //localStorage key can be anything.
+
+        function getMyToken() {
+          if (!localStorage[sKey]) localStorage[sKey] = "{}";
+
+          return JSON.parse(localStorage[sKey]);
+        }
+
+        function setMyToken(tokenObj) {
+          localStorage[sKey] = JSON.stringify(tokenObj);
+        }
+
+        function getTokenSuccess(tokenObj) {
+          print("ComApi.getToken success.");
+
+          var sendGet = ComApi.promisify(ComApi.sendGet);
+        
+          //Promisified sendGet doesn't need callbacks anymore
+          sendGet("Webscape/GetSelections/zgLdW5fLl5d5Lw") //your monitorId
+            .then(function(selections) {
+                print("Monitor selection count: " + selections.length);
+            }).catch(function(xhr) {
+                print("GetSelections failed. Error: " + JSON.stringify(xhr));
+            });
+        }
+
+        function getTokenError(xhr) {
+          var msg = xhr.status === 401 ? ": Enter correct WebAPI Key (see Webscape settings)." : "";
+          print("ComApi.getToken failed. " + xhr.statusText + msg);
+        }
+
+        var getToken = ComApi.promisify(ComApi.getToken);
+
+        function initGetToken() {
+            var getTokenArgs = {
+                credentials: { a: "3uUliZmpkqdGiw" },
+                onSetStorage: setMyToken,
+                onGetStorage: getMyToken,
+                onRenewExpired: initGetToken,
+                isRenewForced: false
+            };
+
+            //Promisified getToken doesn't need callbacks anymore
+            getToken(getTokenArgs).then(getTokenSuccess).catch(getTokenError);
+        }
+
+        initGetToken();
+      } catch (error) {
+        print("Error in page: " + error);
+      }
+    </script>
+  </body>
+</html>
