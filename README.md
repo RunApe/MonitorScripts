@@ -3,9 +3,9 @@
 
 RunApe users are allowed to execute custom [CasperJS](http://casperjs.org/) or [NodeJS/Puppeteer](https://pptr.dev/) scripts that can perform any operations whether they affect the monitor's webpage used for change detection or not.
 
-The CasperJS and Puppeteer frameworks provide a variety of tools used for testing webpages. They help navigating around webpages, clicking elements, and so on. RunApe enables you to build your own tools and libraries that can be reused via your [private files](https://runape.com/Support/Help?page=files) :blue_book: by all of your monitors. The scripts and the files you store on RunApe must follow RunApe's [Terms and conditions](https://runape.com/Terms).
+The CasperJS and Puppeteer frameworks provide a variety of tools used for testing webpages. They help to navigate around webpages, click elements, and so on. RunApe enables you to build your own tools and libraries that can be reused via your [private files](https://runape.com/Support/Help?page=files) :blue_book: by all of your monitors. The scripts and the files you store on RunApe must follow RunApe's [Terms and conditions](https://runape.com/Terms).
 
-Scripts can be either written from scratch in monitor's code editor or they can be generated using the [Scriber browser extension](https://runape.com/Support/Help?page=scriber_browser_extension) :blue_book: that records your browser actions into a replayable script.
+Scripts can be either written from scratch in a monitor's code editor or they can be generated using the [Scriber browser extension](https://runape.com/Support/Help?page=scriber_browser_extension) :blue_book: that records your browser actions into a replayable script.
 
 ![Monitor script](https://github.com/RunApe/MediaFiles/raw/master/Git/monitor_script_screen.png) 
 
@@ -17,7 +17,7 @@ See [Monitor script](https://runape.com/Support/Help?page=monitor_script) :blue_
 
 ### Script input data
 
-The `test.monitor` (Puppeteer) or `casper.test.monitor` (CasperJS) is an input to the script that holds basic context properties of the running monitor. The other monitor properties need be retrieved via the [RunApe API](https://runape.com/Support/Help?page=api). 
+The `test.monitor` (Puppeteer) or `casper.test.monitor` (CasperJS) is an input to the script that holds basic context properties of the running monitor. The other monitor properties need to be retrieved via the [RunApe API](https://runape.com/Support/Help?page=api). 
 
 ```javascript
 {
@@ -49,7 +49,7 @@ The `trigger.sources` is a list of monitor IDs and names when `trigger.type` is 
 
 ### Script execution
 
-The examples below shows a valid script that was recorded with the [Scriber browser extension](https://runape.com/Support/Help?page=scriber_browser_extension) :blue_book: for CasperJS and Puppeteer. The [runape.com/empty](https://runape.com/empty.html) webpage was loaded and one mouse click was recorded. Assertions and logs (console output) are saved to `/Monitors/monitorName/_logs/yyyymmdd_hhmmss.log` files for each script execution.
+The examples below show valid scripts that were recorded with the [Scriber browser extension](https://runape.com/Support/Help?page=scriber_browser_extension) :blue_book: for CasperJS and Puppeteer. The [runape.com/empty](https://runape.com/empty.html) webpage was loaded and one mouse click was recorded. Assertions and logs (console output) are saved to `/Monitors/monitorName/_logs/yyyymmdd_hhmmss.log` files for each script execution.
 
 #### CasperJS
 
@@ -126,8 +126,8 @@ casper.test.isTestPassed = function () {
 
 ## Tricks, Tips and Links
 
-* `test.done()` is added to all places in the code where your test is done, whether it be at the end of an asynchronous callbacks or at the end of synchronous code. Omitting the `test.done()` halts the test until it times out.
-* Your code should always be enclosed in a `try catch` clause so you can handle the error case and output a proper with console.log. To fail the test either push to the `test.failures` array or rethrow the exception. 
+* `test.done()` is added to all places in the code where your test is done, whether it be at the end of asynchronous callbacks or at the end of synchronous code. Omitting the `test.done()` halts the test until it times out.
+* Your code should always be enclosed in a `try-catch` clause so you can handle the error case and output a proper with console.log. To fail the test either push to the `test.failures` array or rethrow the exception. 
   ```javascript
   try{ ... }
   catch (e) {
@@ -137,7 +137,7 @@ casper.test.isTestPassed = function () {
   }
   ```
 
-**TODO: How is below for puppeteer then generalise it?**
+**TODO: How is below for puppeteer then generalize it?**
 
 #### CasperJS
 
