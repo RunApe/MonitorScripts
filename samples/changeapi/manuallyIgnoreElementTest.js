@@ -1,4 +1,4 @@
-﻿casper.test.isTestPassed = function() {	return true; };
+﻿test.isTestPassed = function() {	return true; };
 
 casper.start('START_URL_PLACEHOLDER').then(function(){
 	this.capture("./lib/ManuallyIgnoreElementTest.png");
@@ -14,7 +14,7 @@ casper.start('START_URL_PLACEHOLDER').then(function(){
 		return "";
 	});
 
-	casper.test.assert(!!exception, "Exception in evaluate: " + exception);
+	test.assert(!!exception, "Exception in evaluate: " + exception);
 
 	//console.log("Hello"); //written to /logs/
 }).run(function() {

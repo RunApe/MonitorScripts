@@ -5,7 +5,7 @@ Demonstrating:
     - CasperJS waitFor loop until a condition is met.
 */
 
-casper.test.isTestPassed = function () {
+test.isTestPassed = function () {
   return true;
 };
 

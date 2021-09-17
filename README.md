@@ -17,29 +17,20 @@ See [Monitor script](https://runape.com/Support/Help?page=monitor_script) :blue_
 
 ### Script input data
 
-The `test.monitor` (Puppeteer) or `casper.test.monitor` (CasperJS) is an input to the script that holds basic context properties of the running monitor. The other monitor properties need to be retrieved via the [RunApe API](https://runape.com/Support/Help?page=api). 
+The `test.monitor` is an input to the script that holds basic context properties of the running monitor. The other monitor properties need to be retrieved via the [RunApe API](https://runape.com/Support/Help?page=api). 
 
 ```javascript
 {
-  id: "WjKHpIKj2KcqRA",
+  id: "mid",
   name: "Vacations",
   url: "https://vacations.com/index.html",
-  display: { "useragent": "Browser userAgent", "language": "en-US", "width": 2744, "height": 1378 },
-  selections: [{
-                  "id": "ROFlQvX3FTeKaQ",
-                  "name": "Terrific"
-                }],
+  display: { "useragent": "BrowserUA", "language": "en-US", "width": 2744, "height": 1378 },
+  selections: [{"id": "sid","name": "Terrific"}],
   trigger: {
     type: "Monitors",
     message: "Run triggered by 'Monitor1', 'Monitor2' after they finished running without errors.",
-    sources: [{
-                  "id": "FfGGhz7Cc5ag6A",
-                  "name": "Monitor1"
-                },
-                {
-                  "id": "JeiibRrOXB20lA",
-                  "name": "Monitor2"
-                }]
+    sources: [{"id":"mid1", "name":"Monitor1"},
+              {"id":"mid2", "name":"Monitor2"}]
   }
 }
 ```
@@ -54,7 +45,7 @@ The examples below show valid scripts that were recorded with the [Scriber brows
 #### CasperJS
 
 ```javascript
-casper.test.isTestPassed = function () { return true; };	//Override to always pass
+test.isTestPassed = function () { return true; };	//Override to always pass
 casper.options.viewportSize = {width: 600, height: 800};	//Set the view port
 casper.page.customHeaders = { 'Accept-Language': 'en-US' };	//Set custom headers
 casper.start('https://runape.com/empty.html/');			//Open the webpage.
@@ -97,12 +88,12 @@ casper.run(function() { test.done(); });	//Execute the defined test and finish i
 
 ### Test PASS Condition
 
-The `casper.test.isTestPassed` (CasperJS) and `test.isTestPassed` (Puppeteer) function allows you to optionally decide how many test assertions need to succeed or fail so that the monitor either stops with an error `900 - Test failed` or continues its normal execution. The arrays `casper.test.successes, casper.test.failures` (CasperJS) and `test.successes, test.failures` (Puppeteer) hold the assertion information.
+The `test.isTestPassed` function allows you to optionally decide how many test assertions need to succeed or fail so that the monitor either stops with an error `900 - Test failed` or continues its normal execution. The arrays `test.successes, test.failures` hold the assertion information.
 
 ```javascript
-/* The default implementation that you can override (CasperJS example) */
-casper.test.isTestPassed = function () { 
-    return casper.test.successes.length > 0 && casper.test.failures.length == 0; 
+/* The default implementation that you can override */
+test.isTestPassed = function () { 
+    return test.successes.length > 0 && test.failures.length == 0; 
 }
 ```
 
@@ -126,8 +117,9 @@ casper.test.isTestPassed = function () {
 
 ## Tricks, Tips and Links
 
-* `test.done()` is added to all places in the code where your test is done, whether it be at the end of asynchronous callbacks or at the end of synchronous code. Omitting the `test.done()` halts the test until it times out.
-* Your code should always be enclosed in a `try-catch` clause so you can handle the error case and output a proper with console.log. To fail the test either push to the `test.failures` array or rethrow the exception. 
+* You need to add `test.done()` to all places in the code where your test is finished, whether it be at the end of asynchronous callbacks or at the end of synchronous code. Omitting the `test.done()` halts the test until it times out.
+
+* Your code should always be enclosed in a `try-catch` clause so you can handle the error case and output a proper message with console.log. To fail the test either push to the `test.failures` array or rethrow the exception. 
   ```javascript
   try{ ... }
   catch (e) {
@@ -137,34 +129,39 @@ casper.test.isTestPassed = function () {
   }
   ```
 
-**TODO: How is below for puppeteer then generalize it?**
+* If the [Compare Page](https://runape.com/Support/Help?page=monitor_script#compare_page) :blue_book: property is enabled in a monitor script then you need to ensure that the last HTML before your script finishes has the elements expected by the monitor selection's [CSS Selectors](https://runape.com/Support/Help?page=css_selectors) :blue_book:. If the page comparison that runs after the monitor script does not find the expected element it will stop the monitor with error *913 - All selections are in error* due to selection's *904 - Selection not found error*.
 
-#### CasperJS
+* The `casper.evaluate` does not stop if an exception was thrown but will just continue. You need to have a `try catch` and check the result. Puppeteer stops with an evaluate exception.
 
-- The `casper.evaluate` does not stop if an exception was thrown but will just continue. You need to have a `try catch` and check the result.
+  ```javascript
+  var result = casper.evaluate(function(username, password) {
+    var evalResult;
+    try{
+        document.querySelector('#username').value = username;
+        document.querySelector('#password').value = password;
+        document.querySelector('#submit').click();
+        evalResult = "OK";
+    }
+    catch(e){
+        evalResult = e.message;
+    }
 
-```javascript
-var result = casper.evaluate(function(username, password) {
-        var evalResult;
-        try{
-            document.querySelector('#username').value = username;
-            document.querySelector('#password').value = password;
-            document.querySelector('#submit').click();
-            evalResult = "OK";
-        }
-        catch(e){
-            evalResult = e.message;
-        }
+    return evalResult;
+  }, 'Bazoonga', 'baz00nga');
 
-        return evalResult;
-    }, 'Bazoonga', 'baz00nga');
+  if(result != "OK"){
+      console.log("Cannot log in. Error occured: " + result);
+      test.failures.push(result);
+  }
+  ```
 
-if(result != "OK"){
-    console.log("Cannot log in. Exception occurred");
-    casper.test.failures.push(result);
-}
-```
+* In CasperJS you can [attach a page event listener](https://casperjs.readthedocs.io/en/1.1-beta2/events-filters.html#page-error) to track errors inside of a page. Puppeteer does this with [custom events](https://stackoverflow.com/questions/47107465/puppeteer-how-to-listen-to-object-events) that attach to window's `onerror`. 
 
-
-### Puppeteer
-  TBD
+  ```javascript
+  casper.on("page.error", function (message, trace) {
+    console.log("Page error: " + message);
+    for (var i = 0; i < trace.length; i++) {
+      console.log("   " + trace[i].file + " (line " + trace[i].line + ")");
+    }
+  });
+  ```

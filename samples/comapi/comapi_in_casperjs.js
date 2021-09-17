@@ -4,7 +4,7 @@ Demonstrating:
     - ComApi.GetToken and ComApi.SendGet with promises
 */
 
-casper.test.isTestPassed = function () {
+test.isTestPassed = function () {
   return true;
 };
 
