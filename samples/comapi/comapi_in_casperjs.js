@@ -16,8 +16,10 @@ casper.then(function () {
   try {
     Promise = require("q").Promise; //CasperJS doesn't have Promise and ComApi.promisify needs it
     var ComApi = require("runape-com");
-    var fstore = require("runape-fstore");
+    var FStore = require("runape-fstore");
 
+	  FStore.initCrypto("some_password_used_for_crypto");
+	
     function getTokenSuccess(tokenObj) {
       print("ComApi.getToken success.");
       var sendGet = ComApi.promisify(ComApi.sendGet);
@@ -40,12 +42,14 @@ casper.then(function () {
     }
 
     var getToken = ComApi.promisify(ComApi.getToken);
+    
+    function getJWT(){ return JSON.parse(FStore.get()) }
 
     function initGetToken() {
       var getTokenArgs = {
         credentials: { a: "Your WebAPI Key (see Webscape settings)" },
-        onSetStorage: fstore.set,
-        onGetStorage: fstore.get,
+        onSetStorage: FStore.set,
+        onGetStorage: getJWT,
         onRenewExpired: initGetToken,
         isRenewForced: false,
       };

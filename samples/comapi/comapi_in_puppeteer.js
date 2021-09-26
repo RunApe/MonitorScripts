@@ -11,8 +11,10 @@ Demonstrating:
   try {
     var ComApi = require("/Scripts/node_modules/runape-com");
     var FStore = require("/Scripts/node_modules/runape-fstore");
-
-   function getTokenSuccess(tokenObj) {
+    
+    FStore.initCrypto("some_password_used_for_crypto");
+    
+    function getTokenSuccess(tokenObj) {
       print("ComApi.getToken success.");
 
       function onGetSuccess(selections) {
@@ -25,7 +27,7 @@ Demonstrating:
         test.done();
       }
 
-      ComApi.sendGet("Webscape/GetSelections/" + test.monitor.id, onGetSuccess, onGetError);
+      ComApi.sendGet("Webscape/GetSelections/" +  test.monitor.id, onGetSuccess, onGetError);
     }
 
     function getTokenError(xhr) {
@@ -34,11 +36,13 @@ Demonstrating:
       test.done();
     }
 
+    function getJWT(){ return JSON.parse(FStore.get()) }
+
     function initGetToken() {
       var getTokenArgs = {
         credentials: { a: "Your WebAPI Key (see Webscape settings)" },
         onSetStorage: FStore.set,
-        onGetStorage: FStore.get,
+        onGetStorage: getJWT,
         onRenewExpired: initGetToken,
         isRenewForced: false,
       };

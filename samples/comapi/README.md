@@ -1,1 +1,1 @@
-The samples show the necessary steps to get a JWT token used for API authentication. Token is then used to get monitor's selections. The samples show different techniques to acomplish the above in different environments.
+The samples show the necessary steps to get a JWT token object used for API authentication. JWT is then used by runape-comapi in all subsequent requests as in the example to get monitor's selections. The samples show different techniques to accomplish the above in different environments.

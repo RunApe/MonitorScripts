@@ -29,7 +29,7 @@ casper.start("https://runape.com/empty.html").then(function () {
         }
 
         try {
-          var sKey = "Token"; //localStorage key can be anything.
+          var sKey = "JWT"; //localStorage key can be anything.
           //delete localStorage[sKey]; //Don't have to delete previous token. If a token is expired, it will be automatically renewed.
 
           function getMyToken() {
@@ -104,6 +104,10 @@ casper.start("https://runape.com/empty.html").then(function () {
     casper.waitFor(isSelectionLoaded, 
       function () {
         console.log("Test Success");
+        var result = this.page.evaluate(function () {
+            return document.getElementById("result").textContent;
+          });
+        console.log(result);
       }, function () {
         console.log("Test Fail - Timeout");
     }, 5000);
