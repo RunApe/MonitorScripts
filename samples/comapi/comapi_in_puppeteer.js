@@ -36,13 +36,11 @@ Demonstrating:
       test.done();
     }
 
-    function getJWT(){ return JSON.parse(FStore.get()) }
-
     function initGetToken() {
       var getTokenArgs = {
         credentials: { a: "Your WebAPI Key (see Webscape settings)" },
         onSetStorage: FStore.set,
-        onGetStorage: getJWT,
+        onGetStorage: FStore.get,
         onRenewExpired: initGetToken,
         isRenewForced: false,
       };

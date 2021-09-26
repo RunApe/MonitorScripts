@@ -43,13 +43,11 @@ casper.then(function () {
 
     var getToken = ComApi.promisify(ComApi.getToken);
     
-    function getJWT(){ return JSON.parse(FStore.get()) }
-
     function initGetToken() {
       var getTokenArgs = {
         credentials: { a: "Your WebAPI Key (see Webscape settings)" },
         onSetStorage: FStore.set,
-        onGetStorage: getJWT,
+        onGetStorage: FStore.get,
         onRenewExpired: initGetToken,
         isRenewForced: false,
       };
