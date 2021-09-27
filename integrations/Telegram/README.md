@@ -4,15 +4,15 @@ In order to send messages to Telegram you need to create a new Integration Monit
 
 In the Schedule Trigger of the Integration Monitor select the monitor whose changes you want to be notified about and set the trigger criteria to "Any monitor" & "Finished running without errors". Disable the Schedule.
 
-![img](https://runape.com/Docs/Media/triggeringMonitor.jpg)
+![img](https://github.com/RunApe/MediaFiles/raw/master/Git/triggeringMonitor.jpg)
 
 **How to get botToken:** search @BotFather in Telegram, type /newbot and give your bot a name and an unique username. Find the bot token at the end of the message.
 
-![img](https://runape.com/Docs/Media/telegram.jpg)
+![img](https://github.com/RunApe/MediaFiles/raw/master/Git/telegram.jpg)
 
-**How to get chatId:** create a new channel in Telegram. Add your bot (bot username) to the channel. In the browser go to https://api.telegram.org/bot<botToken>/getUpdates and replace botToken with your token. In the response look for {"chat":{"id":-1001557657624
+**How to get chatId:** create a new channel in Telegram. Add your bot (bot username) to the channel. In the browser go to `https://api.telegram.org/bot<botToken>/getUpdates` and replace botToken with your token. In the response look for `{"chat":{"id":-1001557657624`
 
-```
+```javascript
 (async () => {
     try {
         // replace the value below with the Telegram token you receive from @BotFather
@@ -100,4 +100,3 @@ In the Schedule Trigger of the Integration Monitor select the monitor whose chan
     }
 })();
 ```
-
