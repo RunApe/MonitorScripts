@@ -30,7 +30,7 @@
                 var contentRequest = { "QueryPath": { MonitorID: mid, SelectionID: sid }, QueryType: "Last" };
 
                 var sendPost = ComApi.promisify(ComApi.sendPost);
-                sendPost(contentRequest, "Webscape/GetContent/").then(function(){
+                sendPost(contentRequest, "Webscape/GetContent/").then(function(resp){
                     print("Success GetContent: " + JSON.stringify(resp));
 
                     var api = new TelegramBot(botToken);
@@ -43,7 +43,7 @@
                     }
     
                     /* Send message */
-                    var mName = test.monitor.trigger.sources[0].name;
+                    var mName = "Name"; //test.monitor.trigger.sources[0].name;
                     api.sendMessage({ chat_id: chatId, text: 'Changes detected by monitor ' + mName }, handleTelegramResponse);
                     
 

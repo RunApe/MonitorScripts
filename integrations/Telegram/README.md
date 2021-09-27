@@ -1,6 +1,6 @@
 ## Telegram
 
-In order to send messages to Telegram you need to create a new Integration Monitor with the script below and change the botToken and the chatId values.
+In order to send messages to Telegram you need to create a new Integration Monitor with the Puppeteer script below. You also need to change the botToken and the chatId values.
 
 In the Schedule Trigger of the Integration Monitor select the monitor whose changes you want to be notified about and set the trigger criteria to "Any monitor" & "Finished running without errors". Disable the Schedule.
 
@@ -16,9 +16,9 @@ In the Schedule Trigger of the Integration Monitor select the monitor whose chan
 
 **Note:** The script will send: a message "Changes detected by monitor MonitorName", a photo of the changes and the HTML file with changes to your Telegram chat. You can remove any of three from the script if you don't need them.
 
+**Note:** The Integration Monitor (with the script) needs be enabled in order to get triggered.
 
 ```javascript
-/* The script takes the MonitorID from the triggering monitor. It then fetches the SelectionID and the file paths that are used for sending the photo and the document. */
 /* The script takes the MonitorID from the triggering monitor. It then fetches the SelectionID and the file paths that are used for sending the photo and the document. */
 (async () => {
     try {
