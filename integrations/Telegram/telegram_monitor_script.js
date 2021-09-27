@@ -7,7 +7,7 @@
         var chatId = "-1001557657624";
 
         var fs = require('fs');
-        var TelegramBot = require('/Scripts/node_modules/telegrambot');
+        // var TelegramBot = require('telegrambot'); it's built-in
         var ComApi = require("/Scripts/node_modules/runape-com");
         var FStore = require("/Scripts/node_modules/runape-fstore");
 
