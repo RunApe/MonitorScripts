@@ -1,3 +1,4 @@
+/* The script takes the MonitorID from the triggering monitor. It then fetches the SelectionID and the file paths that are used for sending the photo and the document. */
 (async () => {
     try {
         // replace the value below with the Telegram token you receive from @BotFather
@@ -21,7 +22,7 @@
             }
 
             var mid = test.monitor.trigger.sources[0].id; //See https://github.com/RunApe/MonitorScripts
-            
+
             var sendGet = ComApi.promisify(ComApi.sendGet);
             sendGet("Webscape/GetSelections/" + mid).then(function (selections){
                 print("Success GetSelections: " + JSON.stringify(selections));
@@ -42,9 +43,10 @@
                     }
     
                     /* Send message */
-                    api.sendMessage({ chat_id: chatId, text: 'Change occurred' }, handleTelegramResponse);
+                    var mName = test.monitor.trigger.sources[0].name;
+                    api.sendMessage({ chat_id: chatId, text: 'Changes detected by monitor ' + mName }, handleTelegramResponse);
                     
-    
+
                     /* Send last changes as image */
                     var imageUrl = resp.Content.FilesPath +  resp.Content.FileNames.ImageLarge;
                     //imageUrl = 'https://runape.com/List/s4YTAQU8IPFZPA/Monitors/cjseval/ingenious/2021/9/26/19.28.37/Large_FxEP6DxkUQXyCA.jpg?k=732791023'

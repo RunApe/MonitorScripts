@@ -1,6 +1,6 @@
 ## Telegram
 
-In order to send messages to Telegram you need to create a new Integration Monitor with the script below. 
+In order to send messages to Telegram you need to create a new Integration Monitor with the script below and change the botToken and the chatId values.
 
 In the Schedule Trigger of the Integration Monitor select the monitor whose changes you want to be notified about and set the trigger criteria to "Any monitor" & "Finished running without errors". Disable the Schedule.
 
@@ -12,7 +12,13 @@ In the Schedule Trigger of the Integration Monitor select the monitor whose chan
 
 **How to get chatId:** create a new channel in Telegram. Add your bot (bot username) to the channel. In the browser go to `https://api.telegram.org/bot<botToken>/getUpdates` and replace `<botToken>` with your token. In the response look for `{"chat":{"id":-1001557657624`
 
+
+
+**Note:** The script will send: a message "Changes detected by monitor MonitorName", a photo of the changes and the HTML file with changes to your Telegram chat. You can remove any of three from the script if you don't need them.
+
+
 ```javascript
+/* The script takes the MonitorID from the triggering monitor. It then fetches the SelectionID and the file paths that are used for sending the photo and the document. */
 (async () => {
     try {
         // replace the value below with the Telegram token you receive from @BotFather
@@ -36,7 +42,7 @@ In the Schedule Trigger of the Integration Monitor select the monitor whose chan
             }
 
             var mid = test.monitor.trigger.sources[0].id; //See https://github.com/RunApe/MonitorScripts
-            
+
             var sendGet = ComApi.promisify(ComApi.sendGet);
             sendGet("Webscape/GetSelections/" + mid).then(function (selections){
                 print("Success GetSelections: " + JSON.stringify(selections));
@@ -57,9 +63,10 @@ In the Schedule Trigger of the Integration Monitor select the monitor whose chan
                     }
     
                     /* Send message */
-                    api.sendMessage({ chat_id: chatId, text: 'Change occurred' }, handleTelegramResponse);
+                    var mName = test.monitor.trigger.sources[0].name;
+                    api.sendMessage({ chat_id: chatId, text: 'Changes detected by monitor ' + mName }, handleTelegramResponse);
                     
-    
+
                     /* Send last changes as image */
                     var imageUrl = resp.Content.FilesPath +  resp.Content.FileNames.ImageLarge;
                     //imageUrl = 'https://runape.com/List/s4YTAQU8IPFZPA/Monitors/cjseval/ingenious/2021/9/26/19.28.37/Large_FxEP6DxkUQXyCA.jpg?k=732791023'
@@ -81,7 +88,7 @@ In the Schedule Trigger of the Integration Monitor select the monitor whose chan
         FStore.initCrypto("password");
 
         var getTokenArgs = {
-            credentials: { a: "Your WebAPI Key (Webscape settings)" },
+            credentials: { a: "RcpWLWOWZ1jrdw" },
             onSetStorage: FStore.set,
             onGetStorage: FStore.get,
             onRenewExpired: initGetToken,
