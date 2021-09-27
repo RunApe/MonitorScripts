@@ -19,6 +19,7 @@ In the Schedule Trigger of the Integration Monitor select the monitor whose chan
 
 ```javascript
 /* The script takes the MonitorID from the triggering monitor. It then fetches the SelectionID and the file paths that are used for sending the photo and the document. */
+/* The script takes the MonitorID from the triggering monitor. It then fetches the SelectionID and the file paths that are used for sending the photo and the document. */
 (async () => {
     try {
         // replace the value below with the Telegram token you receive from @BotFather
@@ -87,20 +88,24 @@ In the Schedule Trigger of the Integration Monitor select the monitor whose chan
 
         FStore.initCrypto("password");
 
-        var getTokenArgs = {
-            credentials: { a: "RcpWLWOWZ1jrdw" },
-            onSetStorage: FStore.set,
-            onGetStorage: FStore.get,
-            onRenewExpired: initGetToken,
-            isRenewForced: false,
-        };
+        function initGetToken(){
+            var getTokenArgs = {
+                credentials: { a: "RcpWLWOWZ1jrdw" },
+                onSetStorage: FStore.set,
+                onGetStorage: FStore.get,
+                onRenewExpired: initGetToken,
+                isRenewForced: false,
+            };
 
-        var getToken = ComApi.promisify(ComApi.getToken);
-        getToken(getTokenArgs).then(getTokenSuccess).catch(function (xhr) {
-            var msg = xhr.status === 401 ? ": Enter correct WebAPI Key (see Webscape settings)." : "";
-            print("ComApi.getToken failed. " + xhr.statusText + msg);
-            test.done();
-        });
+            var getToken = ComApi.promisify(ComApi.getToken);
+            getToken(getTokenArgs).then(getTokenSuccess).catch(function (xhr) {
+                var msg = xhr.status === 401 ? ": Enter correct WebAPI Key (see Webscape settings)." : "";
+                print("ComApi.getToken failed. " + xhr.statusText + msg);
+                test.done();
+            });
+        }
+
+        initGetToken();
     } catch (e) {
         console.log(e);
         throw e;

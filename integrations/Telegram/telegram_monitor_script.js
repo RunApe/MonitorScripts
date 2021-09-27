@@ -67,20 +67,24 @@
 
         FStore.initCrypto("password");
 
-        var getTokenArgs = {
-            credentials: { a: "RcpWLWOWZ1jrdw" },
-            onSetStorage: FStore.set,
-            onGetStorage: FStore.get,
-            onRenewExpired: initGetToken,
-            isRenewForced: false,
-        };
+        function initGetToken(){
+            var getTokenArgs = {
+                credentials: { a: "RcpWLWOWZ1jrdw" },
+                onSetStorage: FStore.set,
+                onGetStorage: FStore.get,
+                onRenewExpired: initGetToken,
+                isRenewForced: false,
+            };
 
-        var getToken = ComApi.promisify(ComApi.getToken);
-        getToken(getTokenArgs).then(getTokenSuccess).catch(function (xhr) {
-            var msg = xhr.status === 401 ? ": Enter correct WebAPI Key (see Webscape settings)." : "";
-            print("ComApi.getToken failed. " + xhr.statusText + msg);
-            test.done();
-        });
+            var getToken = ComApi.promisify(ComApi.getToken);
+            getToken(getTokenArgs).then(getTokenSuccess).catch(function (xhr) {
+                var msg = xhr.status === 401 ? ": Enter correct WebAPI Key (see Webscape settings)." : "";
+                print("ComApi.getToken failed. " + xhr.statusText + msg);
+                test.done();
+            });
+        }
+
+        initGetToken();
     } catch (e) {
         console.log(e);
         throw e;
