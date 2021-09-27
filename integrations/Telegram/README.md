@@ -51,7 +51,7 @@ In the Schedule Trigger of the Integration Monitor select the monitor whose chan
                 var contentRequest = { "QueryPath": { MonitorID: mid, SelectionID: sid }, QueryType: "Last" };
 
                 var sendPost = ComApi.promisify(ComApi.sendPost);
-                sendPost(contentRequest, "Webscape/GetContent/").then(function(){
+                sendPost(contentRequest, "Webscape/GetContent/").then(function(resp){
                     print("Success GetContent: " + JSON.stringify(resp));
 
                     var api = new TelegramBot(botToken);

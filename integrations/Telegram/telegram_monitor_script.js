@@ -43,7 +43,7 @@
                     }
     
                     /* Send message */
-                    var mName = "Name"; //test.monitor.trigger.sources[0].name;
+                    var mName = test.monitor.trigger.sources[0].name;
                     api.sendMessage({ chat_id: chatId, text: 'Changes detected by monitor ' + mName }, handleTelegramResponse);
                     
 
