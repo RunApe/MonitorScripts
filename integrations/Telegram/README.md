@@ -10,7 +10,7 @@ In the Schedule Trigger of the Integration Monitor select the monitor whose chan
 
 ![img](https://github.com/RunApe/MediaFiles/raw/master/Git/telegram.jpg)
 
-**How to get chatId:** create a new channel in Telegram. Add your bot (bot username) to the channel. In the browser go to `https://api.telegram.org/bot<botToken>/getUpdates` and replace botToken with your token. In the response look for `{"chat":{"id":-1001557657624`
+**How to get chatId:** create a new channel in Telegram. Add your bot (bot username) to the channel. In the browser go to `https://api.telegram.org/bot<botToken>/getUpdates` and replace `<botToken>` with your token. In the response look for `{"chat":{"id":-1001557657624`
 
 ```javascript
 (async () => {
