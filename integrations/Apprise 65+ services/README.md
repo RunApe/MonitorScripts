@@ -1,14 +1,15 @@
 
 ## Apprise
 
-In order to send messages to 65+ services via Apprise you need to create a new Integration Monitor with the Puppeteer script below. You also need to change the `urls` value in the script depending on which services you need. Detailed description of how the different `urls` look like for different services is found on https://github.com/caronc/apprise/wiki.
+In order to send messages to 65+ services via Apprise you need to create a new Integration Monitor with the Puppeteer script below `(apprise_monitor_script_simple.js)`. You also need to change the `urls` value in the script depending on which services you need. Detailed description of how the different `urls` look like for different services is found on https://github.com/caronc/apprise/wiki.
 
 In the Schedule Trigger of the Integration Monitor select the monitor whose changes you want to be notified about and set the trigger criteria to "Any monitor" & "Finished running without errors". Disable the Schedule.
 
 ![img](https://github.com/RunApe/MediaFiles/raw/master/Git/triggeringMonitor.jpg)
 
 
-**Note:** The script will send: a message with title "Changes occurred" and the name of the Monitor in the message body.
+**Note:** The simple script will send: a message with title "Changes occurred" and the name of the Monitor in the message body.
+**Note:** Use the `apprise_monitor_script_advanced.js` if you need to send the changes as Image or HTML URL in the message body.
 **Note:** The Integration Monitor (with the script) needs be enabled in order to get triggered.
 
 ```javascript
