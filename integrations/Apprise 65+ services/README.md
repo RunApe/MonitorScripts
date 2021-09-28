@@ -9,8 +9,10 @@ In the Schedule Trigger of the Integration Monitor select the monitor whose chan
 
 
 **Note:** The simple script will send: a message with title "Changes occurred" and the name of the Monitor in the message body.
+
 **Note:** Use the `apprise_monitor_script_advanced.js` if you need to send the changes as Image or HTML URL in the message body.
-**Note:** The Integration Monitor (with the script) needs be enabled in order to get triggered.
+
+**Note:** The Integration Monitor needs be enabled in order to get triggered.
 
 ```javascript
 (async () => {
